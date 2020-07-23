@@ -32,9 +32,12 @@ app.listen(8081, function () {
     console.log('Example app listening on port 8081!');
 });
 
-const username = process.env.geonameUser;
+const geonamesUsername = process.env.geonameUser;
+const weatherbitApiKey = process.env.weatherbitApiKey;
 
 let formData = {};
+let geoData = {};
+let weatherData = {};
 
 app.post('/sendFormData', (req, res) => {
     formData = {
@@ -42,14 +45,16 @@ app.post('/sendFormData', (req, res) => {
         date: req.body.date,
         daysBetweenDates: req.body.daysBetweenDates
     }
-    console.log(formData, username);
-    callGeonamesApi(createFetchLink(formData.destination, username));
+    console.log(formData, geonamesUsername);
+    callGeonamesApi(createGeonamesFetchLink(formData.destination, geonamesUsername));
 });
 
-
 // get the api username from the .env file and create the url to fetch the coordinates from
-const createFetchLink = (destination) => {
-    return `http://api.geonames.org/searchJSON?name=${destination}&maxRows=1&username=${username}`;
+const createGeonamesFetchLink = (destination) => {
+    return `http://api.geonames.org/searchJSON?name=${destination}&maxRows=1&username=${geonamesUsername}`;
+};
+const createWeatherbitFetchLink = (lat, lng) => {
+    return `http://api.weatherbit.io/v2.0/forecast/daily?key=${weatherbitApiKey}&lat=${lat}&lon=${lng}`;
 };
 
 const callGeonamesApi = async (url) => {
@@ -57,11 +62,27 @@ const callGeonamesApi = async (url) => {
     .then(res => res.json())
     .then(data => {
         console.log(data);
-        let geoData = {
+        geoData = {
             lat: data.geonames[0].lat,
             lng: data.geonames[0].lng
         }
         console.log('Lat: ' + geoData.lat + ' Lng: ' + geoData.lng);
+
+        callWeatherbitApi(createWeatherbitFetchLink(geoData.lat, geoData.lng))
+    })
+    .catch(error => console.log(err));
+};
+const callWeatherbitApi = async (url) => {
+    await fetch(url)
+    .then(res => res.json())
+    .then(data => {
+        weatherData = {
+            averageTemp: data.data[0].temp,
+            minTemp: data.data[0].min_temp,
+            maxTemp: data.data[0].max_temp,
+            iconCode: data.data[0].weather.icon
+        }
+        console.log(weatherData);
     })
     .catch(error => console.log(err));
 };
