@@ -4,14 +4,20 @@ const handleEvent = async (submitButton) => {
     // let d = new Date();
     // let todaysDate = + d.getDate()+'.'+(d.getMonth()+1)+'.'+ d.getFullYear();
 
-    // const calcDaysBetweenDates = () => {
-        const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+    // get the days between todays date and the travel date
+    const calcDaysBetweenDates = (formDate) => {
+        const oneDay = 24 * 60 * 60 * 1000;
         const firstDate = new Date();
-        const secondDate = new Date(2020, 6, 23);
+        const secondDate = new Date(formDate);
+        
+        // if secondDate lies in the past throw error
+        if (firstDate > secondDate) {
+            alert('Choose a future date.');
+        }
 
-        const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
-        console.log('Days between: ' + diffDays);
-    // }
+        return diffDays = Math.ceil(Math.abs((firstDate - secondDate) / oneDay));
+    };
+
     submitButton.addEventListener('click', event => {
         event.preventDefault();
         // getting form data
@@ -19,6 +25,7 @@ const handleEvent = async (submitButton) => {
         const date = document.getElementById('date').value;
 
         console.log(date);
+        const daysBetweenDates = calcDaysBetweenDates(date);
 
         console.log('POSTING DATA TO SERVER');
         /* Function to POST data */
@@ -41,7 +48,7 @@ const handleEvent = async (submitButton) => {
                 console.log("Error: ", error);
             }
         };
-        postData('/sendFormData', {destination: destination, date: date});
+        postData('/sendFormData', {destination, date, daysBetweenDates});
     })
 };
 

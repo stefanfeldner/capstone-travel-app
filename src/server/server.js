@@ -39,7 +39,8 @@ let formData = {};
 app.post('/sendFormData', (req, res) => {
     formData = {
         destination: req.body.destination,
-        date: req.body.date
+        date: req.body.date,
+        daysBetweenDates: req.body.daysBetweenDates
     }
     console.log(formData, username);
     callGeonamesApi(createFetchLink(formData.destination, username));
