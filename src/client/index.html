@@ -3,17 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Travel Plan</title>
 </head>
 <body>
-    <h1>Enter your chosen travel destination</h1>
-    <form>
-        <label for="destination">Destination:</label>
-        <input type="text" id="destination" name="destination" placeholder="Vienna" required>
-        <label for="date">Travel date:</label>
-        <input type="date" id="date" name="date" placeholder="22.08.2020" required>
-        <input type="submit" id="submitFormData" value="Submit">
-    </form>
-    <img src="./img/a03d.png" alt="Wetter Icon">
+    <header class="top_cst">
+        <div class="travel_planner">
+            <div class="travel_planner_text">
+                <h1>Choose your date</h1>
+                <p>Enter your chosen destination and planned travel date</p>
+            </div>
+            <div class="travel_planner_bottom">
+                <form>
+                    <label for="destination">Destination:</label>
+                    <input type="text" id="destination" name="destination" placeholder="Vienna" required>
+                    <label for="date">Travel date:</label>
+                    <input type="date" id="date" name="date" placeholder="22.08.2020" required>
+                    <input type="submit" id="submitFormData" value="Submit">
+                </form>
+                <div class="result_section">
+                    <div class="result_image">
+                        <img src="img/background.jpg">
+                    </div>
+                    <div class="result_weather">
+                        <div class="result_weather_icon">
+                            <img src="img/weather_icons/a03d.png">
+                        </div>
+                        <div class="result_weather_temp">
+                            <p>Weather Forecast:</p>
+                            <span>Avg. Temp:&nbsp;</span><span id="avg_temp"> 22°C</span><br>
+                            <span>Max. Temp:&nbsp;</span><span id="max_temp">28°C</span><br>
+                            <span>Min. Temp:&nbsp;</span><span id="min_temp">21°C</span>
+                        </div>
+                        <button class="save">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="scroll_down">Go to saved trips</div>
+    </header>
+    <main id="main">
+        <h1>Saved Trips</h1>
+    </main>
 </body>
 </html>

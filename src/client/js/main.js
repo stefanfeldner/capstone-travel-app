@@ -52,4 +52,13 @@ const handleEvent = async (submitButton) => {
     })
 };
 
-module.exports = { handleEvent };
+const scrollButton = document.getElementById('scroll_down');
+scrollButton.addEventListener('click', () => {
+    console.log('test');
+    const mainSection = document.getElementById('main');
+    mainSection.scrollIntoView();
+});
+
+module.exports = { 
+    handleEvent
+ };

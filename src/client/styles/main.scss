@@ -1,5 +1,203 @@
-$bg : lightblue;
+@import './variables.scss';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
 
 body {
-    background: $bg;
+    background-color: #fff;
+    font-family: $font_custom_2;
+    font-size: 16px;
+    line-height: 1.3em;
+}
+
+h1 {
+    font-family: $font_custom_1;
+    text-transform: uppercase;
+    line-height: 1.3em;
+} 
+
+.top_cst {
+    background-image: url(../img/background.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    color: #fff;
+    text-align: center;
+    position: relative;
+
+    .travel_planner {
+        text-align: left;
+        transform: translate(-50%, -50%);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+
+        .travel_planner_text {
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 5px #000;
+
+            h1 {
+                font-size: 3em;
+            }
+            p {
+                font-size: 1.2em;
+            }
+        }
+        .travel_planner_bottom {
+            display: flex;
+            background-color: rgba(#fff, .9);
+            
+            form {
+                //box-shadow: 0 0 30px #000;
+                padding: 0 50px;
+                display: inline-block;
+                margin: auto 0;
+
+                label {
+                    margin-bottom: 5px;
+                    display: block;
+                    font-family: $font_custom_2;
+                    color: #000;
+                }
+
+                input {
+                    display: block;
+                    padding: 10px;
+                    border: none;
+                    box-shadow: 0px 0px 5px #ebebeb;
+                    margin-bottom: 5px;
+                    border-radius: 5px;
+                    width: 200px;
+                    outline: none;
+                    border: 1px solid rgba(#fff, .9);
+
+                    &:focus {
+                        border: 1px solid $custom_color_1;
+                    }
+                }
+                #submitFormData {
+                    background-color: $custom_color_3;
+                    font-family: $font_custom_1;
+                    text-transform: uppercase;
+                    letter-spacing: .5px;
+                    padding: 10px 15px;
+                    border-radius: 5px;
+                    color: #fff;
+                    margin: 15px 0 0;
+                    display: block;
+                    transition: all 0.3s ease;
+
+                    &:hover {
+                        background-color: darken($custom_color_3, 8);
+                        transition: all 0.3s ease;
+                    }
+                }
+            }
+            .result_section {
+                background-color: $custom_color_3;
+
+                .result_image {
+                    img {
+                        max-width: 300px;
+                    }
+                }
+                .result_weather {
+                    padding: 20px;
+                    position: relative;
+                    
+                    .result_weather_icon {
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                        transition: all 0.3s ease;
+
+                        img {
+                            max-width: 50px;
+                            padding: 5px;
+                            border-radius: 100%;
+                            display: inline-block; 
+                            background-color: #fff;
+                            box-shadow: 0px 0px 5px #d6d7d4;
+                        }
+
+                        &:hover {
+                            transform: rotate(30deg);
+                            transition: all 0.3s ease;
+                        }
+                    }
+                    .result_weather_temp {
+                        
+                        p {
+                            font-family: $font_custom_1;
+                            text-transform: uppercase;
+                            margin-bottom: 15px;
+                            font-size: 1.5em;
+                        }
+                        
+                        #avg_temp,
+                        #max_temp,
+                        #min_temp {
+                            font-family: $font_custom_1;
+                            text-transform: uppercase;
+                        }
+                    }
+                }
+                button.save {
+                    background-color: #fff;
+                    font-family: $font_custom_1;
+                    text-transform: uppercase;
+                    letter-spacing: .5px;
+                    padding: 10px 20px;
+                    border-radius: 5px;
+                    color: $custom_color_2;
+                    margin: 15px 0 0;
+                    display: block;
+                    transition: all 0.3s ease;
+                    border: none;
+
+                    &:hover {
+                        background-color: darken(#fff, 8);
+                        transition: all 0.3s ease;
+                    }
+                }
+            }
+        }
+    }
+    #scroll_down {
+        font-family: $font_custom_1;
+        text-transform: uppercase;
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translate(-50%, 0);
+        font-size: 1.2em;
+        text-shadow: 1px 1px 5px #000;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &::after {
+            content: '';
+            height: 30px;
+            width: 30px;
+            background-image: url(../img/icon_down.png);
+            background-size: 30px auto;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: block;
+            margin: 20px auto;
+        }
+
+        &:hover {
+            transform: translate(-50%, 0) scale(1.1);
+            transition: all 0.3s ease;
+        }
+    }
 }
