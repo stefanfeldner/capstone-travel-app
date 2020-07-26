@@ -49,16 +49,42 @@ const handleEvent = async (submitButton) => {
             }
         };
         postData('/sendFormData', {destination, date, daysBetweenDates});
+        getData('/getData');
     })
 };
 
-const scrollButton = document.getElementById('scroll_down');
-scrollButton.addEventListener('click', () => {
-    console.log('test');
-    const mainSection = document.getElementById('main');
-    mainSection.scrollIntoView();
-});
+const scrollToEntries = (scrollButton) => {
+    scrollButton.addEventListener('click', () => {
+        const mainSection = document.getElementById('main');
+        mainSection.scrollIntoView();
+    });
+}
+
+let uiData = {};
+
+/*Function to GET data*/
+const getData = async (url="") => {
+    const response = await fetch(url, {
+        method: "GET"
+    })
+    .then(response => {
+        return response.json();
+    })
+    .then(data => {
+        console.log(data);
+        uiData.imageURL = data[1].imageUrl;
+
+        console.log(uiData.imageURL);
+        updateUI(uiData.imageURL);
+    }).catch(err => console.log(err));
+};
+
+const updateUI = (imageURL) => {
+    const resultImage = document.getElementById('result_image');
+    resultImage.src=imageURL;
+}
 
 module.exports = { 
-    handleEvent
+    handleEvent,
+    scrollToEntries
  };

@@ -32,12 +32,15 @@ app.listen(8081, function () {
     console.log('Example app listening on port 8081!');
 });
 
+// using variables saved in .env file to protect them
 const geonamesUsername = process.env.geonameUser;
 const weatherbitApiKey = process.env.weatherbitApiKey;
+const pixabayApiKey = process.env.pixabayApiKey;;
 
 let formData = {};
 let geoData = {};
 let weatherData = {};
+let pixabayData = {};
 
 app.post('/sendFormData', (req, res) => {
     formData = {
@@ -50,7 +53,7 @@ app.post('/sendFormData', (req, res) => {
     callApi(createGeonamesFetchLink(formData.destination, geonamesUsername));
 });
 
-// get the api username from the .env file and create the url to fetch the coordinates from
+// create the fetch links
 const createGeonamesFetchLink = (destination) => {
     return `http://api.geonames.org/searchJSON?name=${destination}&maxRows=1&username=${geonamesUsername}`;
 };
@@ -58,15 +61,20 @@ const createWeatherbitFetchLink = (lat, lng) => {
     return `http://api.weatherbit.io/v2.0/forecast/daily?key=${weatherbitApiKey}&lat=${lat}&lon=${lng}`;
 };
 
+const createPixabayFetchLink = (destination) => {
+    return `https://pixabay.com/api/?key=${pixabayApiKey}&q=${destination}&image_type=photo&orientation=horizontal&min_width=1920`;
+}
+
+// function to fetch from different apis
 const callApi = async url => {
     
     try {
         await fetch(url)
         .then(res => res.json())
         .then(data => {
-            console.log(data);
+            // console.log(data);
             // check if we called geonames
-            if(data.geonames[0].lat && data.geonames[0].lng) {
+            if('geonames' in data) {
                 geoData = {
                     lat: data.geonames[0].lat,
                     lng: data.geonames[0].lng
@@ -75,14 +83,33 @@ const callApi = async url => {
                 callApi(createWeatherbitFetchLink(geoData.lat, geoData.lng))
             }
             // check if we called weatherbit
-            if(data.city_name != undefined) {
+            if('city_name' in data) {
+                // console.log(data);
                 weatherData = {
-                    averageTemp: data.data[0].temp,
-                    minTemp: data.data[0].min_temp,
-                    maxTemp: data.data[0].max_temp,
-                    iconCode: data.data[0].weather.icon
+                    // use the daysBetweenDates to find the weather of the planned day (-1 because arrays start at 0)
+                    averageTemp: data.data[formData.daysBetweenDates].temp,
+                    minTemp: data.data[formData.daysBetweenDates].min_temp,
+                    maxTemp: data.data[formData.daysBetweenDates].max_temp,
+                    iconCode: data.data[formData.daysBetweenDates].weather.icon
                 }
                 console.log(weatherData);
+                callApi(createPixabayFetchLink(formData.destination));
+            }
+            if('hits' in data) {
+                pixabayData = {
+                    imageUrl: data.hits[0].largeImageURL
+                }
+                console.log(pixabayData);
+
+                // GET data after the last fetch
+                app.get('/getData', (req, res) => {
+                    // sending data
+                    res.status(200).send([
+                        weatherData,
+                        pixabayData
+                    ]);
+                    console.log('Send data');
+                });
             }
         })
     } catch(err) {
