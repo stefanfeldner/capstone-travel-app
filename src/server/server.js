@@ -46,7 +46,8 @@ app.post('/sendFormData', (req, res) => {
         daysBetweenDates: req.body.daysBetweenDates
     }
     console.log(formData, geonamesUsername);
-    callGeonamesApi(createGeonamesFetchLink(formData.destination, geonamesUsername));
+    // callGeonamesApi(createGeonamesFetchLink(formData.destination, geonamesUsername));
+    callApi(createGeonamesFetchLink(formData.destination, geonamesUsername));
 });
 
 // get the api username from the .env file and create the url to fetch the coordinates from
@@ -57,32 +58,34 @@ const createWeatherbitFetchLink = (lat, lng) => {
     return `http://api.weatherbit.io/v2.0/forecast/daily?key=${weatherbitApiKey}&lat=${lat}&lon=${lng}`;
 };
 
-const callGeonamesApi = async (url) => {
-    await fetch(url)
-    .then(res => res.json())
-    .then(data => {
-        console.log(data);
-        geoData = {
-            lat: data.geonames[0].lat,
-            lng: data.geonames[0].lng
-        }
-        console.log('Lat: ' + geoData.lat + ' Lng: ' + geoData.lng);
-
-        callWeatherbitApi(createWeatherbitFetchLink(geoData.lat, geoData.lng))
-    })
-    .catch(error => console.log(err));
-};
-const callWeatherbitApi = async (url) => {
-    await fetch(url)
-    .then(res => res.json())
-    .then(data => {
-        weatherData = {
-            averageTemp: data.data[0].temp,
-            minTemp: data.data[0].min_temp,
-            maxTemp: data.data[0].max_temp,
-            iconCode: data.data[0].weather.icon
-        }
-        console.log(weatherData);
-    })
-    .catch(error => console.log(err));
-};
+const callApi = async url => {
+    
+    try {
+        await fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            // check if we called geonames
+            if(data.geonames[0].lat && data.geonames[0].lng) {
+                geoData = {
+                    lat: data.geonames[0].lat,
+                    lng: data.geonames[0].lng
+                }
+                console.log('Lat: ' + geoData.lat + ' Lng: ' + geoData.lng);
+                callApi(createWeatherbitFetchLink(geoData.lat, geoData.lng))
+            }
+            // check if we called weatherbit
+            if(data.city_name != undefined) {
+                weatherData = {
+                    averageTemp: data.data[0].temp,
+                    minTemp: data.data[0].min_temp,
+                    maxTemp: data.data[0].max_temp,
+                    iconCode: data.data[0].weather.icon
+                }
+                console.log(weatherData);
+            }
+        })
+    } catch(err) {
+        console.log('Error: ' + err);
+    }
+}
