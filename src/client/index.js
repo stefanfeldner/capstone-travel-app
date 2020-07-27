@@ -1,5 +1,4 @@
-import { handleEvent } from './js/main';
-import { scrollToEntries } from './js/main';
+import { handleEvent, scrollToEntries } from './js/main';
 import './styles/main.scss';
 
 const submitButton = document.getElementById('submitFormData');

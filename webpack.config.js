@@ -1,9 +1,11 @@
-const HtmlWebPackPlugin = require("html-webpack-plugin"); 
+const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: './src/client/index.js',
     stats: 'verbose',
+    mode: 'production',
     module: {
         rules: [
             {
@@ -44,6 +46,11 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: "[name].css",
             chunkFilename: "[id].css",
-        })
+        }),
+        new CopyPlugin({
+            patterns: [
+              { from: 'src/client/img/weather_icons', to: 'weather_icons' },
+            ],
+          }),
     ]
 }

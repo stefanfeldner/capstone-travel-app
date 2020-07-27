@@ -1,5 +1,5 @@
 const handleEvent = async (submitButton) => {
-    
+
     // // Create a new date instance dynamically with JS
     // let d = new Date();
     // let todaysDate = + d.getDate()+'.'+(d.getMonth()+1)+'.'+ d.getFullYear();
@@ -9,7 +9,7 @@ const handleEvent = async (submitButton) => {
         const oneDay = 24 * 60 * 60 * 1000;
         const firstDate = new Date();
         const secondDate = new Date(formDate);
-        
+
         // if secondDate lies in the past throw error
         if (firstDate > secondDate) {
             alert('Choose a future date.');
@@ -44,7 +44,7 @@ const handleEvent = async (submitButton) => {
                 // Body data type must match "Content-Type" header
                 body: JSON.stringify(data),
             });
-            
+
             try {
                 const newData = await response.json();
                 return newData;
@@ -78,18 +78,31 @@ const getData = async (url="") => {
     .then(data => {
         console.log(data);
         uiData.imageURL = data[1].imageUrl;
+        uiData.avgTemp = data[0].averageTemp;
+        uiData.maxTemp = data[0].maxTemp;
+        uiData.minTemp = data[0].minTemp;
+        uiData.iconCode = data[0].iconCode;
 
-        console.log(uiData.imageURL);
-        updateUI(uiData.imageURL);
+        console.log(uiData);
+        updateUI(uiData.imageURL, uiData.avgTemp, uiData.maxTemp, uiData.minTemp, uiData.iconCode);
     }).catch(err => console.log(err));
 };
 
-const updateUI = (imageURL) => {
+const updateUI = (imageURL, avgTemp, maxTemp, minTemp, iconCode) => {
     const resultImage = document.getElementById('result_image');
-    resultImage.src=imageURL;
+    const resultIcon = document.getElementById('result_icon');
+    const avgTempPlaceholder = document.getElementById('avg_temp');
+    const maxTempPlaceholder = document.getElementById('max_temp');
+    const minTempPlaceholder = document.getElementById('min_temp');
+
+    resultImage.src = imageURL;
+    resultIcon.src = `/weather_icons/${iconCode}.png`
+    avgTempPlaceholder.textContent = avgTemp + '°C';
+    maxTempPlaceholder.textContent = maxTemp + '°C';
+    minTempPlaceholder.textContent = minTemp + '°C';
 }
 
-module.exports = { 
+module.exports = {
     handleEvent,
     scrollToEntries
  };
