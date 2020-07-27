@@ -48,6 +48,11 @@ app.post('/sendFormData', (req, res) => {
         date: req.body.date,
         daysBetweenDates: req.body.daysBetweenDates
     }
+    res.status(200).send('Data received');
+    // if the travel date is further away than the 16 days forecast, set it to 15 and show the last forecast
+    if(formData.daysBetweenDates > 16) {
+        formData.daysBetweenDates = 15;
+    }
     console.log(formData, geonamesUsername);
     // callGeonamesApi(createGeonamesFetchLink(formData.destination, geonamesUsername));
     callApi(createGeonamesFetchLink(formData.destination, geonamesUsername));
@@ -85,6 +90,7 @@ const callApi = async url => {
             // check if we called weatherbit
             if('city_name' in data) {
                 // console.log(data);
+                console.log('DAYS BETWEEN DATES: ' + formData.daysBetweenDates)
                 weatherData = {
                     // use the daysBetweenDates to find the weather of the planned day (-1 because arrays start at 0)
                     averageTemp: data.data[formData.daysBetweenDates].temp,
@@ -100,19 +106,19 @@ const callApi = async url => {
                     imageUrl: data.hits[0].largeImageURL
                 }
                 console.log(pixabayData);
-
-                // GET data after the last fetch
-                app.get('/getData', (req, res) => {
-                    // sending data
-                    res.status(200).send([
-                        weatherData,
-                        pixabayData
-                    ]);
-                    console.log('Send data');
-                });
             }
         })
     } catch(err) {
         console.log('Error: ' + err);
     }
 }
+
+// GET data after the last fetch
+app.get('/getData', (req, res) => {
+    // sending data
+    res.status(200).send([
+        weatherData,
+        pixabayData
+    ]);
+    console.log('SEND DATA');
+});

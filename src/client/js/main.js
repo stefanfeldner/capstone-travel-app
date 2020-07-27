@@ -20,6 +20,10 @@ const handleEvent = async (submitButton) => {
 
     submitButton.addEventListener('click', event => {
         event.preventDefault();
+        handleSubmitData();
+    })
+
+    const handleSubmitData = async () => {
         // getting form data
         const destination = document.getElementById('destination').value;
         const date = document.getElementById('date').value;
@@ -48,9 +52,10 @@ const handleEvent = async (submitButton) => {
                 console.log("Error: ", error);
             }
         };
-        postData('/sendFormData', {destination, date, daysBetweenDates});
+        await postData('/sendFormData', {destination, date, daysBetweenDates});
+        console.log('GETTING DATA');
         getData('/getData');
-    })
+    };
 };
 
 const scrollToEntries = (scrollButton) => {
