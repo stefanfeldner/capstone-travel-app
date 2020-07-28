@@ -42,20 +42,18 @@ let geoData = {};
 let weatherData = {};
 let pixabayData = {};
 
-app.post('/sendFormData', (req, res) => {
+app.post('/sendFormData', async (req, res) => {
     formData = {
         destination: req.body.destination,
-        date: req.body.date,
         daysBetweenDates: req.body.daysBetweenDates
     }
-    res.status(200).send('Data received');
     // if the travel date is further away than the 16 days forecast, set it to 15 and show the last forecast
     if(formData.daysBetweenDates > 16) {
         formData.daysBetweenDates = 15;
     }
     console.log(formData, geonamesUsername);
-    // callGeonamesApi(createGeonamesFetchLink(formData.destination, geonamesUsername));
-    callApi(createGeonamesFetchLink(formData.destination, geonamesUsername));
+    await callApi(createGeonamesFetchLink(formData.destination, geonamesUsername));
+    res.status(200).send({msg: 'Data received'});
 });
 
 // create the fetch links
@@ -72,11 +70,11 @@ const createPixabayFetchLink = (destination) => {
 
 // function to fetch from different apis
 const callApi = async url => {
-    
+
     try {
         await fetch(url)
         .then(res => res.json())
-        .then(data => {
+        .then(async data => {
             // console.log(data);
             // check if we called geonames
             if('geonames' in data) {
@@ -85,7 +83,7 @@ const callApi = async url => {
                     lng: data.geonames[0].lng
                 }
                 console.log('Lat: ' + geoData.lat + ' Lng: ' + geoData.lng);
-                callApi(createWeatherbitFetchLink(geoData.lat, geoData.lng))
+                await callApi(createWeatherbitFetchLink(geoData.lat, geoData.lng))
             }
             // check if we called weatherbit
             if('city_name' in data) {
@@ -99,7 +97,7 @@ const callApi = async url => {
                     iconCode: data.data[formData.daysBetweenDates].weather.icon
                 }
                 console.log(weatherData);
-                callApi(createPixabayFetchLink(formData.destination));
+                await callApi(createPixabayFetchLink(formData.destination));
             }
             if('hits' in data) {
                 pixabayData = {

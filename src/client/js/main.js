@@ -5,17 +5,22 @@ const handleEvent = async (submitButton) => {
     // let todaysDate = + d.getDate()+'.'+(d.getMonth()+1)+'.'+ d.getFullYear();
 
     // get the days between todays date and the travel date
-    const calcDaysBetweenDates = (formDate) => {
+    const calcDaysBetweenDates = (startDate, endDate) => {
         const oneDay = 24 * 60 * 60 * 1000;
         const firstDate = new Date();
-        const secondDate = new Date(formDate);
+        const startDateFormat = new Date(startDate)
+        const endDateDateFormat = new Date(endDate)
+        const secondDate = new Date(startDate);
 
         // if secondDate lies in the past throw error
         if (firstDate > secondDate) {
             alert('Choose a future date.');
         }
-
-        return diffDays = Math.ceil(Math.abs((firstDate - secondDate) / oneDay));
+        // get the days between the days for the weather forecast
+        diffDays = Math.ceil(Math.abs((firstDate - secondDate) / oneDay));
+        // get the length of the trip
+        tripLength = Math.ceil(Math.abs((startDateFormat - endDateDateFormat) / oneDay));
+        return [diffDays, tripLength];
     };
 
     submitButton.addEventListener('click', event => {
@@ -26,10 +31,15 @@ const handleEvent = async (submitButton) => {
     const handleSubmitData = async () => {
         // getting form data
         const destination = document.getElementById('destination').value;
-        const date = document.getElementById('date').value;
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
 
-        console.log(date);
-        const daysBetweenDates = calcDaysBetweenDates(date);
+        console.log(startDate, endDate);
+        const daysBetweenDates = calcDaysBetweenDates(startDate, endDate)[0];
+        const tripLength = calcDaysBetweenDates(startDate, endDate)[1];
+
+        console.log('Days between dates: ' + daysBetweenDates);
+        console.log('Trip Length: ' + tripLength);
 
         console.log('POSTING DATA TO SERVER');
         /* Function to POST data */
@@ -52,7 +62,7 @@ const handleEvent = async (submitButton) => {
                 console.log("Error: ", error);
             }
         };
-        await postData('/sendFormData', {destination, date, daysBetweenDates});
+        await postData('/sendFormData', {destination, startDate, endDate, tripLength, daysBetweenDates});
         console.log('GETTING DATA');
         getData('/getData');
     };
@@ -94,12 +104,14 @@ const updateUI = (imageURL, avgTemp, maxTemp, minTemp, iconCode) => {
     const avgTempPlaceholder = document.getElementById('avg_temp');
     const maxTempPlaceholder = document.getElementById('max_temp');
     const minTempPlaceholder = document.getElementById('min_temp');
+    const tripDuration = document.getElementById('trip_duration');
 
     resultImage.src = imageURL;
     resultIcon.src = `/weather_icons/${iconCode}.png`
     avgTempPlaceholder.textContent = avgTemp + '°C';
     maxTempPlaceholder.textContent = maxTemp + '°C';
     minTempPlaceholder.textContent = minTemp + '°C';
+    tripDuration.textContent = tripLength + ' Days';
 }
 
 module.exports = {

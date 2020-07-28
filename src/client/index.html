@@ -16,13 +16,16 @@
                 <form>
                     <label for="destination">Destination:</label>
                     <input type="text" id="destination" name="destination" placeholder="Vienna" required>
-                    <label for="date">Travel date:</label>
-                    <input type="date" id="date" name="date" placeholder="22.08.2020" required>
+                    <label for="startDate">Start date:</label>
+                    <input type="date" id="startDate" name="startDate" placeholder="22.08.2020" required>
+                    <label for="date">End date:</label>
+                    <input type="date" id="endDate" name="endDate" placeholder="26.08.2020" required>
                     <input type="submit" id="submitFormData" value="Submit">
                 </form>
                 <div class="result_section">
                     <div class="result_image">
                         <img id="result_image" src="img/placeholder.jpg">
+                        <a href="https://pixabay.com/de/" target="_blank" rel="external nofollow" class="image_copyright">Pictures by Pixabay</a>
                     </div>
                     <div class="result_weather">
                         <div class="result_weather_icon">
@@ -32,7 +35,9 @@
                             <p>Weather Forecast:</p>
                             <span>Avg. Temp:&nbsp;</span><span id="avg_temp"> 22°C</span><br>
                             <span>Max. Temp:&nbsp;</span><span id="max_temp">28°C</span><br>
-                            <span>Min. Temp:&nbsp;</span><span id="min_temp">21°C</span>
+                            <span>Min. Temp:&nbsp;</span><span id="min_temp">21°C</span><br>
+                            <br>
+                            <p>Trip Duration:</p><span id="trip_duration">3 Days</span>
                         </div>
                         <button class="save">Save</button>
                     </div>
