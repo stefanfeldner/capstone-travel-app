@@ -39,15 +39,21 @@
                             <br>
                             <p>Trip Duration:</p><span id="trip_duration">3 Days</span>
                         </div>
-                        <button class="save">Save</button>
+                        <!-- <button class="save">Save</button> -->
                     </div>
                 </div>
             </div>
         </div>
-        <div id="scroll_down">Go to saved trips</div>
+        <!-- <div id="scroll_down">Go to saved trips</div> -->
     </header>
-    <main id="main">
-        <h1>Saved Trips</h1>
-    </main>
+    <script>
+        // Check that service workers are supported
+        if ('serviceWorker' in navigator) {
+            // Use the window load event to keep the page load performant
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js');
+            });
+        }
+    </script>
 </body>
 </html>

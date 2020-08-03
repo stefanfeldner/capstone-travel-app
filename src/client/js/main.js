@@ -77,6 +77,7 @@ const scrollToEntries = (scrollButton) => {
 }
 
 let uiData = {};
+let uiDataArray= [];
 
 /*Function to GET data*/
 const getData = async (url="") => {
