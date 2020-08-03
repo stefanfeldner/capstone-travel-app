@@ -1,4 +1,4 @@
-import { handleEvent, scrollToEntries } from './js/main';
+import { handleEvent, scrollToEntries, calcDaysBetweenDates } from './js/main';
 import './styles/main.scss';
 
 const submitButton = document.getElementById('submitFormData');

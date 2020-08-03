@@ -1,28 +1,5 @@
 const handleEvent = async (submitButton) => {
 
-    // // Create a new date instance dynamically with JS
-    // let d = new Date();
-    // let todaysDate = + d.getDate()+'.'+(d.getMonth()+1)+'.'+ d.getFullYear();
-
-    // get the days between todays date and the travel date
-    const calcDaysBetweenDates = (startDate, endDate) => {
-        const oneDay = 24 * 60 * 60 * 1000;
-        const firstDate = new Date();
-        const startDateFormat = new Date(startDate)
-        const endDateDateFormat = new Date(endDate)
-        const secondDate = new Date(startDate);
-
-        // if secondDate lies in the past throw error
-        if (firstDate > secondDate) {
-            alert('Choose a future date.');
-        }
-        // get the days between the days for the weather forecast
-        diffDays = Math.ceil(Math.abs((firstDate - secondDate) / oneDay));
-        // get the length of the trip
-        tripLength = Math.ceil(Math.abs((startDateFormat - endDateDateFormat) / oneDay));
-        return [diffDays, tripLength];
-    };
-
     submitButton.addEventListener('click', event => {
         event.preventDefault();
         handleSubmitData();
@@ -35,37 +12,61 @@ const handleEvent = async (submitButton) => {
         const endDate = document.getElementById('endDate').value;
 
         console.log(startDate, endDate);
-        const daysBetweenDates = calcDaysBetweenDates(startDate, endDate)[0];
-        const tripLength = calcDaysBetweenDates(startDate, endDate)[1];
 
-        console.log('Days between dates: ' + daysBetweenDates);
-        console.log('Trip Length: ' + tripLength);
+        try {
+            const [daysBetweenDates, tripLength] = calculateDaysBetweenDates(start, end);
 
-        console.log('POSTING DATA TO SERVER');
-        /* Function to POST data */
-        const postData = async (url="", data = {}) => {
-            console.log(data);
-            const response = await fetch(url, {
-                method: "POST",
-                credentials: "same-origin",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                // Body data type must match "Content-Type" header
-                body: JSON.stringify(data),
-            });
+            console.log('Days between dates: ' + daysBetweenDates);
+            console.log('Trip Length: ' + tripLength);
 
-            try {
-                const newData = await response.json();
-                return newData;
-            } catch (error) {
-                console.log("Error: ", error);
-            }
-        };
-        await postData('/sendFormData', {destination, startDate, endDate, tripLength, daysBetweenDates});
-        console.log('GETTING DATA');
-        getData('/getData');
+            console.log('POSTING DATA TO SERVER');
+            /* Function to POST data */
+            const postData = async (url="", data = {}) => {
+                console.log(data);
+                const response = await fetch(url, {
+                    method: "POST",
+                    credentials: "same-origin",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    // Body data type must match "Content-Type" header
+                    body: JSON.stringify(data),
+                });
+
+                try {
+                    const newData = await response.json();
+                    return newData;
+                } catch (error) {
+                    console.log("Error: ", error);
+                }
+            };
+            await postData('/sendFormData', {destination, startDate, endDate, tripLength, daysBetweenDates});
+            console.log('GETTING DATA');
+            getData('/getData');
+        } catch (error) {
+            alert(error);
+        }
     };
+};
+
+// get the days between todays date and the travel date
+const calcDaysBetweenDates = (startDate, endDate) => {
+    const oneDay = 24 * 60 * 60 * 1000;
+    const firstDate = new Date();
+    const startDateFormat = new Date(startDate)
+    const endDateDateFormat = new Date(endDate)
+    const secondDate = new Date(startDate);
+
+    // if secondDate lies in the past throw error
+    if (firstDate > secondDate) {
+        throw new Error('Choose a future date.');
+    }
+
+    // get the days between the days for the weather forecast
+    let diffDays = Math.floor(Math.abs((firstDate - secondDate) / oneDay));
+    // get the length of the trip
+    let tripLength = Math.ceil(Math.abs((startDateFormat - endDateDateFormat) / oneDay));
+    return [diffDays, tripLength];
 };
 
 const scrollToEntries = (scrollButton) => {
@@ -116,5 +117,6 @@ const updateUI = (imageURL, avgTemp, maxTemp, minTemp, iconCode) => {
 
 module.exports = {
     handleEvent,
-    scrollToEntries
- };
+    scrollToEntries,
+    calcDaysBetweenDates
+};

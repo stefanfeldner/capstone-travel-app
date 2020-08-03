@@ -120,3 +120,7 @@ app.get('/getData', (req, res) => {
     ]);
     console.log('SEND DATA');
 });
+
+module.exports = {
+    callApi
+};
