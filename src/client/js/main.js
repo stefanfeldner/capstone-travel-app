@@ -14,8 +14,11 @@ const handleEvent = async (submitButton) => {
         console.log(startDate, endDate);
 
         try {
-            const [daysBetweenDates, tripLength] = calculateDaysBetweenDates(start, end);
+            const daysBetweenDates = calcDaysBetweenDates(startDate, endDate)[0]
+            const tripLength = calcDaysBetweenDates(startDate, endDate)[1];
 
+            console.log('CalcDaysFunction: ' + calcDaysBetweenDates(startDate, endDate)[0]);
+            
             console.log('Days between dates: ' + daysBetweenDates);
             console.log('Trip Length: ' + tripLength);
 
@@ -69,12 +72,12 @@ const calcDaysBetweenDates = (startDate, endDate) => {
     return [diffDays, tripLength];
 };
 
-const scrollToEntries = (scrollButton) => {
-    scrollButton.addEventListener('click', () => {
-        const mainSection = document.getElementById('main');
-        mainSection.scrollIntoView();
-    });
-}
+// const scrollToEntries = (scrollButton) => {
+//     scrollButton.addEventListener('click', () => {
+//         const mainSection = document.getElementById('main');
+//         mainSection.scrollIntoView();
+//     });
+// }
 
 let uiData = {};
 let uiDataArray= [];
@@ -118,6 +121,6 @@ const updateUI = (imageURL, avgTemp, maxTemp, minTemp, iconCode) => {
 
 module.exports = {
     handleEvent,
-    scrollToEntries,
+    // scrollToEntries,
     calcDaysBetweenDates
 };

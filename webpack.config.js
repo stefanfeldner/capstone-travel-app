@@ -1,7 +1,7 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-// const WorkboxPlugin = require('workbox-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
     entry: './src/client/index.js',
@@ -53,6 +53,6 @@ module.exports = {
               { from: 'src/client/img/weather_icons', to: 'weather_icons' },
             ],
         }),
-        // new WorkboxPlugin.GenerateSW(),
+        new WorkboxPlugin.GenerateSW(),
     ]
 }

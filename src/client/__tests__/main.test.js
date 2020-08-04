@@ -1,7 +1,4 @@
-// const handleEvent = require('../js/main');
 const { calcDaysBetweenDates } = require('../js/main');
-
-// input - expected output - assert the result.
 
 describe("Testing Form Input Results", () => {
     test("Testing the days between two equal dates", () => {

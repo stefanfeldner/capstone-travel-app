@@ -1,8 +1,11 @@
-const { callApi } = require('../../server/server');
+const app = require('../../src/server/server');
+const supertest = require('supertest');
+const request = supertest(app);
 
-describe("Testing Server", () => {
-    // test("Testing the callApi return", () => {
-    //     const testURL = 'http://api.geonames.org/searchJSON?name=vienna&maxRows=1&username=demo';
-    //     expect(callApi(testURL)).toHaveProperty('geonames');
-    // });
+describe('Post endpoint', () => {
+  it('/getData', async (done) => {
+    const response = await request.get('/getData');
+    expect(response.status).toBe(200);
+    done();
+  });
 });
