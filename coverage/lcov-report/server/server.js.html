@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">53.57% </span>
+                <span class="strong">55.36% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>30/56</span>
+                <span class='fraction'>31/56</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">11.11% </span>
+                <span class="strong">22.22% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/9</span>
+                <span class='fraction'>2/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">53.57% </span>
+                <span class="strong">55.36% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>30/56</span>
+                <span class='fraction'>31/56</span>
             </div>
         
             
@@ -180,9 +180,7 @@
 <a name='L121'></a><a href='#L121'>121</a>
 <a name='L122'></a><a href='#L122'>122</a>
 <a name='L123'></a><a href='#L123'>123</a>
-<a name='L124'></a><a href='#L124'>124</a>
-<a name='L125'></a><a href='#L125'>125</a>
-<a name='L126'></a><a href='#L126'>126</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L124'></a><a href='#L124'>124</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -213,7 +211,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -255,8 +253,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -298,16 +296,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Express to run server and routes
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">// Express to run server and routes
 const express = require('express');
 // Fetch for node to fetch API data
 const fetch = require('node-fetch');
@@ -337,8 +333,8 @@ dotenv.config();
 console.log('Geoname User: ' + process.env.geonameUser);
 &nbsp;
 // designates what port the app will listen to for incoming requests
-app.listen(8081, <span class="fstat-no" title="function not covered" >fu</span>nction () {
-<span class="cstat-no" title="statement not covered" >    console.log('Example app listening on port 8081!');</span>
+app.listen(8081, function () {
+    console.log('Example app listening on port 8081!');
 });
 &nbsp;
 // using variables saved in .env file to protect them
@@ -378,10 +374,10 @@ const createPixabayFetchLink = <span class="fstat-no" title="function not covere
 }
 &nbsp;
 // function to fetch from different apis
-const callApi = async url =&gt; {
+const callApi = <span class="fstat-no" title="function not covered" >as</span>ync url =&gt; {
 &nbsp;
-    try {
-        await fetch(url)
+<span class="cstat-no" title="statement not covered" >    try {</span>
+<span class="cstat-no" title="statement not covered" >        await fetch(url)</span>
         .then(<span class="fstat-no" title="function not covered" >re</span>s =&gt; <span class="cstat-no" title="statement not covered" >res.json())</span>
         .then(<span class="fstat-no" title="function not covered" >as</span>ync data =&gt; {
             // console.log(data);
@@ -421,25 +417,23 @@ const callApi = async url =&gt; {
 }
 &nbsp;
 // GET data after the last fetch
-app.get('/getData', <span class="fstat-no" title="function not covered" >(r</span>eq, res) =&gt; {
+app.get('/getData', (req, res) =&gt; {
     // sending data
-<span class="cstat-no" title="statement not covered" >    res.status(200).send([</span>
+    res.status(200).send([
         weatherData,
         pixabayData
     ]);
-<span class="cstat-no" title="statement not covered" >    console.log('SEND DATA');</span>
+    console.log('SEND DATA');
 });
 &nbsp;
-module.exports = {
-    callApi
-};</pre></td></tr></table></pre>
+module.exports = app;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Aug 03 2020 19:19:25 GMT+0200 (GMT+02:00)
+                at Wed Aug 05 2020 18:35:52 GMT+0200 (GMT+02:00)
             </div>
         </div>
         <script src="../prettify.js"></script>
