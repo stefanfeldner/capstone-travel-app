@@ -25,8 +25,6 @@ app.use(express.static('dist'));
 const dotenv = require('dotenv');
 dotenv.config();
 
-console.log('Geoname User: ' + process.env.geonameUser);
-
 // designates what port the app will listen to for incoming requests
 app.listen(8081, function () {
     console.log('Example app listening on port 8081!');
@@ -51,7 +49,7 @@ app.post('/sendFormData', async (req, res) => {
     if(formData.daysBetweenDates > 16) {
         formData.daysBetweenDates = 15;
     }
-    console.log(formData, geonamesUsername);
+    console.log(formData);
     await callApi(createGeonamesFetchLink(formData.destination, geonamesUsername));
     res.status(200).send({msg: 'Data received'});
 });
@@ -94,7 +92,8 @@ const callApi = async url => {
                     averageTemp: data.data[formData.daysBetweenDates].temp,
                     minTemp: data.data[formData.daysBetweenDates].min_temp,
                     maxTemp: data.data[formData.daysBetweenDates].max_temp,
-                    iconCode: data.data[formData.daysBetweenDates].weather.icon
+                    iconCode: data.data[formData.daysBetweenDates].weather.icon,
+                    tripLength: formData.daysBetweenDates
                 }
                 console.log(weatherData);
                 await callApi(createPixabayFetchLink(formData.destination));

@@ -39,7 +39,6 @@
                             <br>
                             <p>Trip Duration:</p><span id="trip_duration">3 Days</span>
                         </div>
-                        <!-- <button class="save">Save</button> -->
                     </div>
                 </div>
             </div>
@@ -49,7 +48,7 @@
     <script>
         // Check that service workers are supported
         if ('serviceWorker' in navigator) {
-            // Use the window load event to keep the page load performant
+            // Use the window load event to keep the page load performance
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/service-worker.js');
             });
