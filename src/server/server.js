@@ -49,7 +49,6 @@ app.post('/sendFormData', async (req, res) => {
     if(formData.daysBetweenDates > 16) {
         formData.daysBetweenDates = 15;
     }
-    console.log(formData);
     await callApi(createGeonamesFetchLink(formData.destination, geonamesUsername));
     res.status(200).send({msg: 'Data received'});
 });
@@ -73,20 +72,17 @@ const callApi = async url => {
         await fetch(url)
         .then(res => res.json())
         .then(async data => {
-            // console.log(data);
             // check if we called geonames
             if('geonames' in data) {
                 geoData = {
                     lat: data.geonames[0].lat,
                     lng: data.geonames[0].lng
                 }
-                console.log('Lat: ' + geoData.lat + ' Lng: ' + geoData.lng);
                 await callApi(createWeatherbitFetchLink(geoData.lat, geoData.lng))
             }
             // check if we called weatherbit
             if('city_name' in data) {
                 // console.log(data);
-                console.log('DAYS BETWEEN DATES: ' + formData.daysBetweenDates)
                 weatherData = {
                     // use the daysBetweenDates to find the weather of the planned day (-1 because arrays start at 0)
                     averageTemp: data.data[formData.daysBetweenDates].temp,
@@ -95,14 +91,12 @@ const callApi = async url => {
                     iconCode: data.data[formData.daysBetweenDates].weather.icon,
                     tripLength: formData.daysBetweenDates
                 }
-                console.log(weatherData);
                 await callApi(createPixabayFetchLink(formData.destination));
             }
             if('hits' in data) {
                 pixabayData = {
                     imageUrl: data.hits[0].largeImageURL
                 }
-                console.log(pixabayData);
             }
         })
     } catch(err) {

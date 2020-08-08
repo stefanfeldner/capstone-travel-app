@@ -167,6 +167,11 @@ a {
                             font-size: 1.5em;
                         }
 
+                        #error_message {
+                            display: none;
+                            color: red;
+                        }
+
                         #avg_temp,
                         #max_temp,
                         #min_temp {
@@ -224,5 +229,52 @@ a {
             transform: translate(-50%, 0) scale(1.1);
             transition: all 0.3s ease;
         }
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .top_cst {
+        width: 100%;
+        height: auto;
+
+        .travel_planner {
+            position: unset;
+            display: block;
+            top: unset;
+            left: unset;
+            transform: unset;
+            padding: 50px 10%;
+
+            .travel_planner_text h1 {
+                font-size: 2em;
+            }
+
+            .travel_planner_bottom {
+                flex-direction: column;
+
+                form {
+                   padding: 30px 50px;
+
+                    input {
+                        width: 100%;
+                    }
+                }
+                .result_section {
+
+
+                    .result_image {
+                        img {
+                            max-width: 100%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .top_cst .travel_planner {
+        padding: 50px 5%;
     }
 }

@@ -11,16 +11,12 @@ const handleEvent = async (submitButton) => {
         const startDate = document.getElementById('startDate').value;
         const endDate = document.getElementById('endDate').value;
 
-        console.log(startDate, endDate);
-
         try {
             const daysBetweenDates = await calcDaysBetweenDates(startDate, endDate)
-            console.log('Days between dates: ' + daysBetweenDates);
 
             console.log('POSTING DATA TO SERVER');
             /* Function to POST data */
             const postData = async (url="", data = {}) => {
-                console.log(data);
                 const response = await fetch(url, {
                     method: "POST",
                     credentials: "same-origin",
@@ -39,7 +35,6 @@ const handleEvent = async (submitButton) => {
                 }
             };
             await postData('/sendFormData', {destination, startDate, endDate, daysBetweenDates});
-            console.log('GETTING DATA');
             getData('/getData');
         } catch (error) {
             alert(error);
@@ -63,14 +58,8 @@ const calcDaysBetweenDates = (startDate, endDate) => {
     return daysBetweenDates ;
 };
 
-// const scrollToEntries = (scrollButton) => {
-//     scrollButton.addEventListener('click', () => {
-//         const mainSection = document.getElementById('main');
-//         mainSection.scrollIntoView();
-//     });
-// }
-
 let uiData = {};
+const errorMessage = document.getElementById('error_message');
 
 /*Function to GET data*/
 const getData = async (url="") => {
@@ -81,16 +70,17 @@ const getData = async (url="") => {
         return response.json();
     })
     .then(data => {
-        console.log(data);
         uiData.imageURL = data[1].imageUrl;
         uiData.tripLength = data[0].tripLength;
         uiData.avgTemp = data[0].averageTemp;
         uiData.maxTemp = data[0].maxTemp;
         uiData.minTemp = data[0].minTemp;
         uiData.iconCode = data[0].iconCode;
-        console.log(uiData);
         updateUI(uiData.imageURL, uiData.avgTemp, uiData.maxTemp, uiData.minTemp, uiData.iconCode, uiData.tripLength);
-    }).catch(err => console.log(err));
+    }).catch(err => {
+        console.log(err);
+        errorMessage.style.display = "block";
+    });
 };
 
 // updating UI
@@ -112,6 +102,5 @@ const updateUI = (imageURL, avgTemp, maxTemp, minTemp, iconCode, tripLength) => 
 
 module.exports = {
     handleEvent,
-    // scrollToEntries,
     calcDaysBetweenDates
 };
