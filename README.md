@@ -6,6 +6,10 @@ It's a travel and weather application, combining the data from 3 different APIs 
 
 All of it is running asynchronously and with webpack and service workers installed.
 
+## Image
+
+![Screenshot Barcelona](https://raw.githubusercontent.com/stefanfeldner/capstone-travel-app/master/src/client/img/readme-img.png)
+
 ## Built With
 
 - JS / HTML / CSS
